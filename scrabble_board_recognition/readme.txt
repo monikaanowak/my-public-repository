@@ -6,6 +6,10 @@ Dataset consists of three types of data:
 3. "boards" - boards written in .xlsx files (for letter classification)
 Dataset is divided into a training set "train_data" (99 photos) and a test set (25 photos).
 
+-------------------------------------------- installation --------------------------------------------
+# path set to scrabble_board_recognition folder
+pip install -e .
+
 -------------------------------------------- example of using the model --------------------------------------------
 # letters are written to the console
 python -m corner_training.torch_model test_ims --corners-checkpoint=corners_model.pt --letters-checkpoint=letters_model.pt --device=cpu "C:\Users\Monika\Desktop\PJATK\MGR\data\test_data\photos\IMG_8282.JPEG"

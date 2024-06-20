@@ -1,0 +1,14 @@
+setup.py
+corner_training/__init__.py
+corner_training/coords.py
+corner_training/corners.py
+corner_training/model_structure.py
+corner_training/perspective.py
+corner_training/prepare_dataset.py
+corner_training/torch_model.py
+corner_training/vis.py
+corner_training.egg-info/PKG-INFO
+corner_training.egg-info/SOURCES.txt
+corner_training.egg-info/dependency_links.txt
+corner_training.egg-info/requires.txt
+corner_training.egg-info/top_level.txt
