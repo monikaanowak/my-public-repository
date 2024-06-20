@@ -1,7 +1,3 @@
-# python -m corner_training.prepare_dataset vis_aug --im_dir=$DATASET_PATH/ploter --im_labelled_dir=$DATASET_PATH/ploter/labels_draw
-# python -m corner_training.prepare_dataset create_dataset_corners --dataset-dir=$DATASET_PATH/monia-mgr/train_data --out-file=$DATASET_PATH/monia-mgr/corners_train.h5 --num-epochs=2 --repeat-count=64
-# python -m corner_training.prepare_dataset create_dataset_letters --dataset-dir=$DATASET_PATH/monia-mgr/train_data --out-file=$DATASET_PATH/monia-mgr/letters_train.h5 --num-epochs=4 --repeat-scale=.25 --max-repeat=512
-
 import json
 from os import path, replace
 from sys import argv

@@ -1,9 +1,3 @@
-# python -m corner_training.torch_model train_corners --train-set-path=$DATASET_PATH/monia-mgr/corners_train.h5 --testset-dir=$DATASET_PATH/monia-mgr/test_data --num-epochs=256
-# python -m corner_training.torch_model test_ims $DATASET_PATH/ploter/IMG_1_image.jpg
-# python -m corner_training.torch_model train_letters --train-set-path=$DATASET_PATH/monia-mgr/letters_train.h5 --batch-size=128 --num-epochs=64
-# python -m corner_training.torch_model score_checkpoint_letters --letters-checkpoint=letters_model.pt --im_dir=C:/Users/Monika/Desktop/PJATK/MGR/photos --im_labelled_dir=C:/Users/Monika/Desktop/PJATK/MGR/photos_labeled --board_excel_dir=C:/Users/Monika/Desktop/PJATK/MGR/boards --alert_loss=0.7 --device=cpu  6306 6307 6308 6309 6310
-# python -m corner_training.torch_model score_checkpoint --checkpoint-path=corners_model.pt --im-dir=C:\Users\Monika\Desktop\PJATK\MGR\photos --im-labelled-dir=C:\Users\Monika\Desktop\PJATK\MGR\photos_labeled
-
 import json
 from collections import defaultdict
 from os import path
@@ -422,7 +416,7 @@ def train_corners(
         print(f'Best loss {best_loss}')
 
 
-@command
+@command()
 @option('--stats-path', default='corner_model_losses.npz', help='Path of stats .npz file')
 def show_corners_stats(stats_path: str):
     stats = dict(np.load(stats_path))
