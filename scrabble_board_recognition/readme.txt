@@ -1,46 +1,58 @@
--------------------------------------------- about dataset --------------------------------------------
-Dataset can be downloaded from: https://drive.google.com/drive/folders/1o0JUSApr0vw-tiXm3JTIUkPb--umVgak?usp=sharing
-Dataset consists of three types of data:
-1. "photos" - photos of boards (.JPEG),
-2. "photos_labeled" - photos of boards with labeled characteristic points (for the corner detection and board orientation model) (.JPEG),
-3. "boards" - boards written in .xlsx files (for letter classification)
-Dataset is divided into a training set "train_data" (99 photos) and a test set (25 photos).
+Aby wykorzystać model, wystarczy zainstalować moduły z folderu "scrabble_board_recognition"
+oraz uruchomić odpowiednią funkcję podając w parametrze ścieżkę do zdjęcia z plnszą Scrabble.
+Poniżej przedstawiono jak zainstalować paczkę oraz przykład użycia modelu.
 
--------------------------------------------- installation --------------------------------------------
-# path set to scrabble_board_recognition folder
+Dodatkowo zamieszczono lokalizację pełnego zbioru danych wykorzystanego w treningu i testach
+oraz poszczególne funkcje wykonane podczas realizacji projektu.
+
+Aby wyjść z działającego programu należy wcisnąć klawisz ESC.
+Aby przejść do kolejnego kroku należy wcisnąć dowolny inny klawisz np. spację.
+
+-------------------------------------------- Instalacja modułów --------------------------------------------
+# Należy ustawić ścieżkę na folder "scrabble_board_recognition"
 pip install -e .
 
--------------------------------------------- example of using the model --------------------------------------------
-# letters are written to the console
-python -m corner_training.torch_model test_ims --corners-checkpoint=corners_model.pt --letters-checkpoint=letters_model.pt --device=cpu "C:\Users\Monika\Desktop\PJATK\MGR\data\test_data\photos\IMG_8282.JPEG"
+-------------------------------------------- Przykłady użycia modelu --------------------------------------------
+# Litery rozpoznane na obrazach wypisują się w konsoli.
+python -m corner_training.torch_model test_ims "IMG_3419.JPEG"
+python -m corner_training.torch_model test_ims "IMG_8281.JPEG"
+python -m corner_training.torch_model test_ims "IMG_8285.JPEG"
 
--------------------------------------------- visualization of augmented data --------------------------------------------
-# visualization of augmented photos with 5-point labels and adding a grid to the cut-out letters
+-------------------------------------------- Zbiór danych --------------------------------------------
+Zbiór danych można pobrać z: https://drive.google.com/drive/folders/1o0JUSApr0vw-tiXm3JTIUkPb--umVgak?usp=sharing
+Zbiór zawiera trzy rodzaje danych:
+1. "photos" - zdjęcia plansz (.JPEG),
+2. "photos_labeled" - zdjęcia plansz z oznakowanymi punktami charakterystycznymi(do modelu detekcji rogów i orientacji planszy) (.JPEG),
+3. "boards" - plansza opisana w pliku .xlsx (do modelu klasyfikacji liter)
+Zbiór danych jest podzielony na zbiór treningowy "train_data" (99 zdjęć) oraz na zbiór testowy (25 zdjęć).
+
+-------------------------------------------- Wizualizacja augmentacji --------------------------------------------
+# Wizualizacja zagmentowanych zdjęć z 5 punktami i nałożoną siatką do wycięcia liter
 python -m corner_training.prepare_dataset vis_aug_corners --dataset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\train_data"
 
-# visualization of cut-out, augmented letters (based on point labels)
+# Wizualizacja wyciętych, zaugmentowanych liter (na podstawie punktów oznaczonych na zdjęciach z "photos_labeled")
 python -m corner_training.prepare_dataset vis_aug_letters --dataset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\train_data" 8330
 
--------------------------------------------- prepare dataset to training --------------------------------------------
+-------------------------------------------- Przygotowanie zbiorów danych do treningów --------------------------------------------
 python -m corner_training.prepare_dataset create_dataset_corners --dataset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\train_data" --out-file=corners_train_demo.h5 --num-epochs=1 --repeat-count=1
 python -m corner_training.prepare_dataset create_dataset_letters --dataset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\train_data" --out-file=letters_train_demo.h5 --num-epochs=1 --min-repeat=1 --max-repeat=1 --repeat-scale=1
-# visualization to debbug
+# Wizualizacja do debbugowania
 python -m corner_training.torch_model show_dataset --dataset-path=corners_train_demo.h5 --device=cpu
 
--------------------------------------------- model for detecting corners and board orientation --------------------------------------------
-# traning
+-------------------------------------------- Model do detekcji rogów i orientacji planszy --------------------------------------------
+# Trening
 python -m corner_training.torch_model train_corners --train-set-path=corners_train_demo.h5 --model-save-path=corners_model_demo.pt --stats-save-path=corner_model_losses_demo.npz --batch-size=4 --num-epochs=1 --testset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\test_data" --device=cpu
-# visualization stats
+# Statystyki
 python -m corner_training.torch_model show_corners_stats --stats-path=corner_model_losses.npz
-# test
+# Test
 python -m corner_training.torch_model score_checkpoint_corners --checkpoint-path=corners_model.pt --dataset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\test_data" --device=cpu
 
--------------------------------------------- model for letter classification --------------------------------------------
-# traning
+-------------------------------------------- Model do klasyfikacji liter --------------------------------------------
+# Trening
 python -m corner_training.torch_model train_letters --train-set-path=letters_train_demo.h5 --model-save-path=letters_model_demo.pt --stats-save-path=letters_model_losses_demo.npz --batch-size=4 --num-epochs=4 --testset-dir="C:\Users\Monika\Desktop\PJATK\MGR\data\test_data" --device=cpu
-# visualization stats
+# Statystyki
 python -m corner_training.torch_model show_letters_stats --stats-path=letters_model_losses.npz
-# test of the model for classification as label verification (for alert_loss=0.7 I visualized where the model is uncertain, which helped correct labeling errors on the training tooth and the test, you can give boards and watch where it is uncertain and draw)
+# Test modelu wykorzystany do weryfikcji oznakowań exceli (dla alert_loss=0.7 funkcja zwraca wizualizacje obrazu z naniesionymi literami z excela w miejsca na obrazie co do których model był niepewny lub zwrócił inną wartość, co pozwoliło półautometycznie weryfikować poprawność exceli)
 python -m corner_training.torch_model score_checkpoint_letters --letters-checkpoint=letters_model.pt --dataset_dir="C:\Users\Monika\Desktop\PJATK\MGR\data\train_data" --alert_loss=0.3 --device=cpu 4037 8335
-# test
+# Test właściwy
 python -m corner_training.torch_model score_checkpoint_letters --letters-checkpoint=letters_model.pt --dataset_dir="C:\Users\Monika\Desktop\PJATK\MGR\data\test_data" --device=cpu
