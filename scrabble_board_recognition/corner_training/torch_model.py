@@ -185,7 +185,7 @@ def score_corners_model(
             out_im = y[0].cpu().numpy()
 
             label_gt = compute_gt_output(out_im.shape[1:], [label_coords], 10., x.device)
-            corners = mask_corners_nms(out_im[0], threshold=.5)
+            corners = mask_corners_nms(out_im[0], threshold=.2)
             corners = filter_corners_by_weights(corners, 100)[:5]
 
             loss = compute_loss_corners(y, label_gt).mean().item()
@@ -617,7 +617,7 @@ def test_ims(corners_checkpoint, letters_checkpoint, device, im_files):
             y = net(x)
             out_im = y[0, 0].cpu().numpy()
 
-            corners = mask_corners_nms(out_im, threshold=.5)
+            corners = mask_corners_nms(out_im, threshold=.2)
             corners = filter_corners_by_weights(corners, 100)
             print(f'Found {len(corners)} corners')
 

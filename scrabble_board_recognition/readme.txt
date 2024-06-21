@@ -15,6 +15,7 @@ pip install -e .
 -------------------------------------------- Przykłady użycia modelu --------------------------------------------
 # Litery rozpoznane na obrazach wypisują się w konsoli.
 python -m corner_training.torch_model test_ims "IMG_3419.JPEG"
+python -m corner_training.torch_model test_ims "IMG_3429.JPEG"
 python -m corner_training.torch_model test_ims "IMG_8281.JPEG"
 python -m corner_training.torch_model test_ims "IMG_8285.JPEG"
 
