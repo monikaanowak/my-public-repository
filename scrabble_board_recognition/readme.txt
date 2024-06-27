@@ -8,8 +8,17 @@ oraz poszczególne funkcje wykonane podczas realizacji projektu.
 Aby wyjść z działającego programu należy wcisnąć klawisz ESC.
 Aby przejść do kolejnego kroku należy wcisnąć dowolny inny klawisz np. spację.
 
--------------------------------------------- Instalacja modułów --------------------------------------------
+-------------------------------------------- Przygotowanie środowiska--------------------------------------------
+# Instalacja pythona 3.12.4 https://www.python.org/downloads/ (wystarczy wersja 3.11)
+# Utworzenie srodowiska wirtualnego:
+path-to-python.exe -m venv myenv
+# Aktywacja srodowiska wirtualnego:
+.\\myenv\Scripts\activate.bat
+
+-------------------------------------------- Instalacja programu --------------------------------------------
+# Pobranie folderu "scrabble_board_recognition" z https://drive.google.com/drive/folders/1jlChnI6tiUUfdi7DdW21l5vBaXqaQb72?usp=sharing
 # Należy ustawić ścieżkę na folder "scrabble_board_recognition"
+pip install tqdm "numpy<2"
 pip install -e .
 
 -------------------------------------------- Przykłady użycia modelu --------------------------------------------
